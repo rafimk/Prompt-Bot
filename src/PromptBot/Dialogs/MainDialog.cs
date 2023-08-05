@@ -12,6 +12,7 @@ using PromptBot.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -64,12 +65,14 @@ namespace PromptBot.Dialogs
                 var age = promptContext.Recognized.Value;
 
                 // check whether age is a number
-                //Regex regex = new Regex(@"^[0-9]+$");
-                //if (!regex.IsMatch(age.ToString()))
-                //{
-                //    await promptContext.Context.SendActivityAsync(MessageFactory.Text("Please enter a valid age. Age cannot be a text value. Please enter a number."), cancellationToken);
-                //    return false;
-                //}
+                string ageRegexPattern = @"^(1[0-9]|[1-9])\d?$";
+                string input = "25";
+
+                if (!Regex.IsMatch(input, ageRegexPattern))
+                {
+                    await promptContext.Context.SendActivityAsync(MessageFactory.Text("Please enter a valid age. Age cannot be a text value. Please enter a number."), cancellationToken);
+                    return false;
+                }
 
                 if (age < 18)
                 {
